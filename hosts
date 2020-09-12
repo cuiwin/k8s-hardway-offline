@@ -1,0 +1,28 @@
+[etcd]
+192.168.37.50 ansible_ssh_pass="123456" NODE_NAME=etcd1
+192.168.37.51 ansible_ssh_pass="123456" NODE_NAME=etcd2
+192.168.37.52 ansible_ssh_pass="123456" NODE_NAME=etcd3
+
+[kube-master]
+192.168.37.51 ansible_ssh_pass="123456"
+192.168.37.52 ansible_ssh_pass="123456"
+
+[kube-node]
+192.168.37.53 ansible_ssh_pass="123456"
+192.168.37.54 ansible_ssh_pass="123456"
+
+[all:vars]
+# --------- Main Variables ---------------
+# Cluster container-runtime supported: docker, containerd
+CONTAINER_RUNTIME="docker"
+
+
+# -------- Additional Variables (don't change the default value right now) ---
+# Binaries Directory
+bin_dir="/opt/k8s/bin"
+
+# CA and other components cert/key Directory
+ca_dir="/etc/kubernetes/ssl"
+
+# Deploy Directory 
+base_dir="/etc/ansible"

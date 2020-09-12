@@ -1,2 +1,5 @@
 # k8s-hardway-offline
-ansible-playbook  k8s 
+
+###  参考链接
+https://kubernetes.feisky.xyz/setup/k8s-hard-way
+

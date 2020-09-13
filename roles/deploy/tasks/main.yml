@@ -1,0 +1,19 @@
+
+- name: 
+  copy:
+    
+
+- name: 本地设置 bin 目录权限
+  file: 
+    path: "{{ base_dir }}/bin"
+    state: directory 
+    mode: 0755 
+    recurse: yes
+
+
+
+
+- name: "create ca cert and ca key"
+  shell: cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+  args:
+    chdir: 

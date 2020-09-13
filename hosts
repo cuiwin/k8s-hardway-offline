@@ -17,6 +17,8 @@
 CONTAINER_RUNTIME="docker"
 
 
+CA_EXPIRY = 87600h
+
 # -------- Additional Variables (don't change the default value right now) ---
 # Binaries Directory
 bin_dir="/opt/k8s/bin"

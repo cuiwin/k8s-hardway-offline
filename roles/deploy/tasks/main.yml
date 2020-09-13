@@ -1,19 +1,49 @@
 
-- name: 
+- name: 准备cfssl cfssljson kubectl文件
   copy:
-    
+    src: "{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
+    mode: 0755
+  with_items:
+    - cfssl
+    - cfssljson
+    - kubectl
 
-- name: 本地设置 bin 目录权限
+
+- name: 创建证书生成目录
   file: 
-    path: "{{ base_dir }}/bin"
+    path: "{{ base_dir }}/ssl"
     state: directory 
-    mode: 0755 
-    recurse: yes
 
 
+- name: 读取ca证书stat信息
+  stat: path="{{ base_dir }}/ssl/ca.pem"
+  register: p
 
+- name: 准备CA配置文件和签名请求
+  template: 
+    src: "{{ item }}.j2" 
+    dest: "{{ base_dir }}/ssl/{{ item }}"
+  with_items:
+  - "ca-config.json"
+  - "ca-csr.json"
+  when: p.stat.isreg is not defined
 
 - name: "create ca cert and ca key"
   shell: cfssl gencert -initca ca-csr.json | cfssljson -bare ca
   args:
-    chdir: 
+    chdir: "{{ base_dir }}/ssl"
+  when: p.stat.isreg is not defined
+
+
+#----------- 创建配置文件: /root/.kube/config
+- import_tasks: create-kubectl-kubeconfig.yml
+
+#------------创建配置文件: kube-controller-manager.kubeconfig
+- import_tasks: create-kube-controller-manager-kubeconfig.yml
+
+#------------创建配置文件: kube-scheduler.kubeconfig
+- import_tasks: create-kube-scheduler-kubeconfig.yml
+
+#------------创建配置文件: kube-proxy.kubeconfig
+- import_tasks: create-kube-proxy-kubeconfig.yml

@@ -2,3 +2,8 @@
 - hosts: localhost
   roles:
   - deploy
+
+
+- hosts: etcd
+  roles:
+  - etcd
